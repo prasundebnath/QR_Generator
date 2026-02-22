@@ -4,9 +4,6 @@ A qr code generator made using python, pyqrcode and tkinter.
 
 Has functionality to change background color of qr.
 
-![screenshot](blob/main/screenshot_qr.png)
-
-![qrcode](screenshot_qr.png)
 
 
 
