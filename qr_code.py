@@ -1,6 +1,7 @@
 from pyqrcode import create
 import tkinter as tk
 from tkinter import colorchooser
+from tkinter import filedialog
 
 
 
@@ -19,6 +20,11 @@ def color():
 
 
 
+
+
+
+
+
 color_button = tk.Button(root, text="Choose Color", font= ("Segoe UI", 12), command=color, bg="#3B8FC7", fg="white", relief="ridge", activebackground="#496BC7", cursor="hand2", activeforeground="white")
 
 
@@ -26,7 +32,7 @@ color_button = tk.Button(root, text="Choose Color", font= ("Segoe UI", 12), comm
 
 
 def gen_qr():
-    global dta
+    global dta, xbm_image
     dta = data.get()
     if dta == "":
         statement.config(text="Please enter some text to generate QR Code")
@@ -54,15 +60,51 @@ def gen_qr():
     statement.config(text="QR Code Generated!")
 
 
+def save_qr():
+    if 'dta' not in globals():
+        statement.config(text="Generate QR first!")
+        return
+
+    file_path = filedialog.asksaveasfilename(
+        defaultextension=".png",
+        filetypes=[("PNG file", "*.png")]
+    )
+
+    if file_path:
+        dta.png(file_path, scale=8)
+        statement.config(text="QR Saved Successfully!")
+
+
 heading = tk.Label(root, text="QR COde Generator", font = ("Segoe UI", 40, "bold"))
 subtitle = tk.Label(root, text="Enter the text for your QR", font = ("Segoe UI", 14))
 
-make_button = tk.Button(root, text="Generate QR" , font= ("Segoe UI", 12, "bold"), bg="#4CAF50",
-    fg="white",relief= "raised", activebackground="#43A047", cursor="hand2",
-    activeforeground="white",command=gen_qr)
+make_button = tk.Button(root, 
+    text="Generate QR", 
+    font= ("Segoe UI", 12, "bold"), 
+    bg="#4CAF50",
+    fg="white",relief= "raised", 
+    activebackground="#43A047", 
+    cursor="hand2",
+    activeforeground="white",
+    command=gen_qr)
 
 image_view = tk.Label(root)
 statement = tk.Label(root)
+save_button = tk.Button(
+    root,
+    text="Save QR",
+    font=("Segoe UI", 10, "bold"),
+    bg="#FF9F0F",
+    fg="white",
+    activebackground="#915000",
+    relief="flat",
+    padx=18,
+    pady=8,
+    cursor="hand2",
+    command=save_qr
+)
+
+
 
 
 
@@ -81,4 +123,9 @@ image_view.grid(row=4, column=0, columnspan=2, pady=15)
 
 statement.grid(row=5, column=0, columnspan=2, pady=(5,20))
 
-root.mainloop()
+save_button.grid(row=6, column=0, columnspan=2, pady=10)
+
+try:
+    root.mainloop()
+except KeyboardInterrupt:
+    pass
